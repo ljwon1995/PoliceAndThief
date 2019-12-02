@@ -31,7 +31,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean isAccessCoarseLocation = false;
     private boolean isPermission = false;
 
-    private GpsController gps;
+    private GpsController gpsController;
 
 
     @Override
@@ -43,35 +43,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        askPermission();  // 권한 요청을 해야 함
-
-        if (!isPermission) {
-            askPermission();
-            return;
-        }
-
-        gps = new GpsController(MapsActivity.this);
-        // GPS 사용유무 가져오기
-        if (gps.isGetLocation()) {
-
-            Location loc = gps.getLoc();
-
-            Toast.makeText(
-                    getApplicationContext(),
-                    "당신의 위치 - \n위도: " + loc.getAltitude() + "\n경도: " + loc.getLongitude(),
-                    Toast.LENGTH_LONG).show();
-        } else {
-            // GPS 를 사용할수 없으므로
-            gps.popAlert();
-        }
-
-
-
-
-
-
-
 
     }
 
@@ -126,17 +97,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        askPermission();  // 권한 요청을 해야 함
 
-        LatLng SEOUL = new LatLng(37.56, 126.97);
+        if (!isPermission) {
+            askPermission();
+            return;
+        }
 
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(SEOUL);
-        markerOptions.title("서울");
-        markerOptions.snippet("한국의 수도");
-        mMap.addMarker(markerOptions);
+        gpsController = new GpsController(MapsActivity.this);
+        // GPS 사용유무 가져오기
+        if (gpsController.isGetLocation()) {
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+            Location loc = gpsController.getLoc();
+
+            Toast.makeText(
+                    getApplicationContext(),
+                    "당신의 위치 - \n위도: " + loc.getAltitude() + "\n경도: " + loc.getLongitude(),
+                    Toast.LENGTH_LONG).show();
+
+            LatLng CUR = new LatLng(loc.getLatitude(), loc.getLongitude());
+
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(CUR);
+            markerOptions.title("현재위치");
+            mMap.addMarker(markerOptions);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(CUR));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+        } else {
+            gpsController.popAlert();
+        }
+
+
+
 
     }
 }
