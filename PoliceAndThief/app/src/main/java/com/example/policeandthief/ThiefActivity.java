@@ -1,18 +1,9 @@
 package com.example.policeandthief;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,11 +11,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class ThiefActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
-
     private GpsController gpsController;
 
 
@@ -37,8 +26,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        
-        LocSender ls = new LocSender(MapsActivity.this, this);
+
+        LocSender ls = new LocSender(ThiefActivity.this, this);
         ls.start();
 
     }
@@ -49,7 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
 
-        gpsController = new GpsController(MapsActivity.this, this);
+        gpsController = new GpsController(ThiefActivity.this, this);
 
         if (gpsController.isGetLocation()) {
 

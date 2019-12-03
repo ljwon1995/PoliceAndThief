@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class LocSender extends Thread {
+public class ThiefLocSender extends Thread {
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -19,8 +19,9 @@ public class LocSender extends Thread {
     private Activity a;
     private LatLng cur;
     private static final String TAG = "LocSender!";
+    private Location loc;
 
-    public LocSender(Context context, Activity activity){
+    public ThiefLocSender(Context context, Activity activity){
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         flag = true;
@@ -31,23 +32,23 @@ public class LocSender extends Thread {
     }
 
     public void run(){
-        key = myRef.push().getKey();
-        Log.d(TAG, "get key = " + key);
+        key = "Test";
+
 
         while(flag){
             if (gpsController.isGetLocation()) {
-                Location loc = gpsController.getLoc();
+                loc = gpsController.getLoc();
                 cur = new LatLng(loc.getLatitude(), loc.getLongitude());
             } else {
                 gpsController.popAlert();
             }
             myRef.child(key).setValue(cur);
+
             try {
-                Thread.sleep(5000);
-            }catch(Exception e){
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
 
     }
@@ -55,9 +56,4 @@ public class LocSender extends Thread {
     public void setFlag(boolean b){
         flag = b;
     }
-
-
-
-
-
 }
