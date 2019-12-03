@@ -11,7 +11,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class ThiefActivity extends FragmentActivity implements OnMapReadyCallback {
+public class PoliceActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private GpsController gpsController;
@@ -20,14 +20,14 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_thief_maps);
+        setContentView(R.layout.activity_police_maps);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.thief_map);
+                .findFragmentById(R.id.police_map);
         mapFragment.getMapAsync(this);
 
-        ThiefLocSender tls = new ThiefLocSender(ThiefActivity.this, this);
+        PoliceLocSender tls = new PoliceLocSender(PoliceActivity.this, this);
         tls.start();
 
         LocGetter tlg = new LocGetter();
@@ -41,7 +41,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
 
-        gpsController = new GpsController(ThiefActivity.this, this);
+        gpsController = new GpsController(PoliceActivity.this, this);
 
         if (gpsController.isGetLocation()) {
 

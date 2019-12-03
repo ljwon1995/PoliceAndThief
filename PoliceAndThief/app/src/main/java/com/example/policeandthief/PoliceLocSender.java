@@ -10,7 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
-public class ThiefLocSender extends Thread {
+public class PoliceLocSender extends Thread {
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -20,20 +20,20 @@ public class ThiefLocSender extends Thread {
     private Context c;
     private Activity a;
     private LatLng cur;
-    private static final String TAG = "ThiefLocSender!";
+    private static final String TAG = "PoliceLocSender!";
     private Location loc;
-    private HashMap<String, Double> Thief;
+    private HashMap<String, Double> Police;
 
-    //나중에 key 값 바꿔야함!!
 
-    public ThiefLocSender(Context context, Activity activity){
+    //나중에 key 바꿔야함
+    public PoliceLocSender(Context context, Activity activity){
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child(key).child("Thief");
+        myRef = database.getReference().child(key).child("Police");
         flag = true;
         c = context;
         a = activity;
         gpsController = new GpsController(c, a);
-        Thief = new HashMap<>();
+        Police = new HashMap<>();
         Log.d(TAG, gpsController.toString());
     }
 
@@ -43,12 +43,12 @@ public class ThiefLocSender extends Thread {
             if (gpsController.isGetLocation()) {
                 loc = gpsController.getLoc();
 
-                Thief.put("latitude", loc.getLatitude());
-                Thief.put("longitude", loc.getLongitude());
+                Police.put("latitude", loc.getLatitude());
+                Police.put("longitude", loc.getLongitude());
             } else {
                 gpsController.popAlert();
             }
-            myRef.setValue(Thief);
+            myRef.setValue(Police);
 
             try {
                 Thread.sleep(1000);
