@@ -27,8 +27,11 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        ThiefLocSender ls = new ThiefLocSender(ThiefActivity.this, this);
-        ls.start();
+        ThiefLocSender tls = new ThiefLocSender(ThiefActivity.this, this);
+        tls.start();
+
+        LocGetter tlg = new LocGetter();
+        tlg.start();
 
     }
 

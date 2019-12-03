@@ -8,41 +8,47 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 public class ThiefLocSender extends Thread {
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private boolean flag;
-    private String key;
+    private String key = "Test";
     private GpsController gpsController;
     private Context c;
     private Activity a;
     private LatLng cur;
     private static final String TAG = "LocSender!";
     private Location loc;
+    private HashMap<String, Double> Thief;
+    private double longitude;
+    private double latitude;
 
     public ThiefLocSender(Context context, Activity activity){
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
+        myRef = database.getReference().child(key).child("Thief");
         flag = true;
         c = context;
         a = activity;
         gpsController = new GpsController(c, a);
+        Thief = new HashMap<>();
         Log.d(TAG, gpsController.toString());
     }
 
     public void run(){
-        key = "Test";
-
 
         while(flag){
             if (gpsController.isGetLocation()) {
                 loc = gpsController.getLoc();
-                cur = new LatLng(loc.getLatitude(), loc.getLongitude());
+
+                Thief.put("latitude", loc.getLatitude());
+                Thief.put("longitude", loc.getLongitude());
             } else {
                 gpsController.popAlert();
             }
-            myRef.child(key).setValue(cur);
+            myRef.setValue(Thief);
 
             try {
                 Thread.sleep(1000);
