@@ -37,6 +37,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        
+        LocSender ls = new LocSender(MapsActivity.this, this);
+        ls.start();
 
     }
 
@@ -68,6 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             gpsController.popAlert();
         }
+
     }
 
     @Override

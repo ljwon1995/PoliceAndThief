@@ -186,6 +186,12 @@ public class GpsController implements LocationListener {
             isPermission = true;
         }
     }
+
+    public void stopGPS(){
+        if(lm != null){
+            lm.removeUpdates(GpsController.this);
+        }
+    }
 }
 
 
