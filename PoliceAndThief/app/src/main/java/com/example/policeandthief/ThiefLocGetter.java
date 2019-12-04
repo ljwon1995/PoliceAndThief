@@ -1,5 +1,6 @@
 package com.example.policeandthief;
 
+import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -32,11 +33,15 @@ public class ThiefLocGetter extends Thread {
     private GenericTypeIndicator<HashMap<String, Double>> to;
     private GoogleMap mMap;
     private LatLng curPos;
+    private float toDecoderDistance;
+    private float toPoliceDistance;
+    private DistanceManager dm;
+    private BeepManager beepManager;
 
 
 
 
-    public ThiefLocGetter(int st, GoogleMap map){
+    public ThiefLocGetter(GoogleMap map){
         Log.d(TAG, "Enter LogGetter Constructor");
 
         mMap = map;
@@ -51,6 +56,7 @@ public class ThiefLocGetter extends Thread {
         Police = new HashMap<>();
         Decoder = new HashMap<>();
         to = new GenericTypeIndicator<HashMap<String, Double>>() {};
+        beepManager = new BeepManager();
         ve = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -79,13 +85,15 @@ public class ThiefLocGetter extends Thread {
                 allLoc.setDecoder(Decoder);
 
 
-//                    set own location to map;
-                curPos = new LatLng(Thief.get("latitude"), Thief.get("longitude"));
-                marker.setPosition(curPos);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(curPos));
 //                    get distance from police and decoder;
-//                    beepmanager.setBeep(distance);
-//                    decoderBtnManager.setDecoderVisible(distance);
+                dm = new DistanceManager(allLoc);
+                toPoliceDistance = dm.getDistance().get("toPolice");
+                toDecoderDistance = dm.getDistance().get("toDecoder");
+
+                Log.d(TAG, "To Police : " + toPoliceDistance);
+                Log.d(TAG, "To Decoder : " + toDecoderDistance);
+                beepManager.setBeep(toPoliceDistance);
+//                decoderBtnManager.setDecoderVisible(toDecoderDistance);
 
 
             }
@@ -103,7 +111,7 @@ public class ThiefLocGetter extends Thread {
 
         Log.d(TAG, "enter run");
         myRef.addValueEventListener(ve);
-
+        beepManager.start();
         while(flag){
             try {
                 Thread.sleep(1000);

@@ -2,10 +2,11 @@ package com.example.policeandthief;
 
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.util.Log;
 
 public class BeepManager extends Thread{
     private ToneGenerator tg;
-    private int distance = 1000;
+    private int distance = 50;
 
     public BeepManager(){
         tg = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
@@ -20,6 +21,7 @@ public class BeepManager extends Thread{
         while(true) {
             tg.startTone(ToneGenerator.TONE_CDMA_PIP, 100);
             try {
+                Log.d("LocGetter!", "Sleep : "+ (distance * 10));
                 Thread.sleep(distance * 10);
             } catch (Exception e) {
                 e.printStackTrace();
