@@ -15,6 +15,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
 
     private GoogleMap mMap;
     private GpsController gpsController;
+    private static final int STATUS_POLICE = 10;
 
 
     @Override
@@ -30,7 +31,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
         PoliceLocSender tls = new PoliceLocSender(PoliceActivity.this, this);
         tls.start();
 
-        LocGetter tlg = new LocGetter();
+        LocGetter tlg = new LocGetter(STATUS_POLICE);
         tlg.start();
 
     }

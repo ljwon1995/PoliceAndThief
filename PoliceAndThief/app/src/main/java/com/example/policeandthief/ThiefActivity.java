@@ -15,6 +15,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private GpsController gpsController;
+    private static final int STATUS_THIEF = 20;
 
 
     @Override
@@ -30,7 +31,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
         ThiefLocSender tls = new ThiefLocSender(ThiefActivity.this, this);
         tls.start();
 
-        LocGetter tlg = new LocGetter();
+        LocGetter tlg = new LocGetter(STATUS_THIEF);
         tlg.start();
 
     }

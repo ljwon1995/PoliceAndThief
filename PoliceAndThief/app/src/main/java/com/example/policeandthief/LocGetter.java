@@ -25,11 +25,18 @@ public class LocGetter extends Thread {
     private HashMap<String, Double> Police;
     private HashMap<String, Double> Decoder;
     private GenericTypeIndicator<HashMap<String, Double>> to;
+    private int status;
+
+
+    private static final int STATUS_POLICE = 10;
+    private static final int STATUS_THIEF = 20;
 
 
 
-    public LocGetter(){
+    public LocGetter(int status){
         Log.d(TAG, "Enter LogGetter Constructor");
+
+        this.status = status;
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
