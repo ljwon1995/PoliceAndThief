@@ -50,13 +50,12 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
                     Toast.LENGTH_LONG).show();
 
             LatLng CUR = new LatLng(loc.getLatitude(), loc.getLongitude());
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(CUR);
-            markerOptions.title("현재위치");
-            marker = mMap.addMarker(markerOptions);
+
             mMap.moveCamera(CameraUpdateFactory.newLatLng(CUR));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
-            ThiefLocGetter tlg = new ThiefLocGetter(Map);
+            mMap.setMyLocationEnabled(true);
+
+            ThiefLocGetter tlg = new ThiefLocGetter(mMap);
             tlg.start();
 
         } else {
