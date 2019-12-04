@@ -3,6 +3,11 @@ package com.example.policeandthief;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -12,31 +17,29 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
-public class LocGetter extends Thread {
+public class ThiefLocGetter extends Thread {
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private boolean flag;
     private String key = "Test";
     private ValueEventListener ve;
-    private String TAG = "LocGetter!";
+    private String TAG = "ThiefLocGetter!";
     private AllLocation allLoc;
     private HashMap<String, Double> Thief;
     private HashMap<String, Double> Police;
     private HashMap<String, Double> Decoder;
     private GenericTypeIndicator<HashMap<String, Double>> to;
-    private int status;
-
-
-    private static final int STATUS_POLICE = 10;
-    private static final int STATUS_THIEF = 20;
+    private GoogleMap mMap;
+    private LatLng curPos;
 
 
 
-    public LocGetter(int status){
+
+    public ThiefLocGetter(int st, GoogleMap map){
         Log.d(TAG, "Enter LogGetter Constructor");
 
-        this.status = status;
+        mMap = map;
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
@@ -44,13 +47,10 @@ public class LocGetter extends Thread {
 
 
         allLoc = new AllLocation();
-
         Thief = new HashMap<>();
         Police = new HashMap<>();
         Decoder = new HashMap<>();
-
         to = new GenericTypeIndicator<HashMap<String, Double>>() {};
-
         ve = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -77,6 +77,16 @@ public class LocGetter extends Thread {
                 allLoc.setThief(Thief);
                 allLoc.setPolice(Police);
                 allLoc.setDecoder(Decoder);
+
+
+//                    set own location to map;
+                curPos = new LatLng(Thief.get("latitude"), Thief.get("longitude"));
+                marker.setPosition(curPos);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(curPos));
+//                    get distance from police and decoder;
+//                    beepmanager.setBeep(distance);
+//                    decoderBtnManager.setDecoderVisible(distance);
+
 
             }
 

@@ -15,7 +15,6 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private GpsController gpsController;
-    private static final int STATUS_THIEF = 20;
 
 
     @Override
@@ -30,9 +29,6 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
         ThiefLocSender tls = new ThiefLocSender(ThiefActivity.this, this);
         tls.start();
-
-        LocGetter tlg = new LocGetter(STATUS_THIEF);
-        tlg.start();
 
     }
 
@@ -54,13 +50,15 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
                     Toast.LENGTH_LONG).show();
 
             LatLng CUR = new LatLng(loc.getLatitude(), loc.getLongitude());
-
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(CUR);
             markerOptions.title("현재위치");
-            mMap.addMarker(markerOptions);
+            marker = mMap.addMarker(markerOptions);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(CUR));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+            ThiefLocGetter tlg = new ThiefLocGetter(Map);
+            tlg.start();
+
         } else {
             gpsController.popAlert();
         }
