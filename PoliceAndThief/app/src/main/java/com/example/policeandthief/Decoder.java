@@ -10,6 +10,8 @@ public class Decoder implements Serializable {
     private int progress;
     private HashMap<String, Double> location;
     private boolean isActive;
+    private boolean[] isDone;
+
 
     public Decoder(){
         texts = new ArrayList<>();
@@ -23,7 +25,19 @@ public class Decoder implements Serializable {
 
 
         progress = 0;
+        isDone = new boolean[4];
+        for(int i = 0; i < 4; i++){
+            isDone[i] = false;
+        }
 
+    }
+
+    public boolean[] getIsDone() {
+        return isDone;
+    }
+
+    public void setIsDone(boolean[] isDone) {
+        this.isDone = isDone;
     }
 
     public boolean isActive() {

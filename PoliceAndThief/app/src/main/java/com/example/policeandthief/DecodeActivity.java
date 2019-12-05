@@ -1,8 +1,9 @@
 package com.example.policeandthief;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ public class DecodeActivity extends AppCompatActivity {
     private static final String TAG = "DecodeActivity!";
     private static final int RESULT_OK = 100;
     private int progress;
+    private boolean[] isDone;
     private Button saveBtn;
     private TextView[] tvs;
     private EditText[] ets;
@@ -49,9 +51,11 @@ public class DecodeActivity extends AppCompatActivity {
 
         for(int i = 0; i < 4; i++){
             tvs[i].setText(decoder.getTexts().get(i));
+            //isDone 보고 ets set 해주기
+            if(decoder.getIsDone()[i] == true){
+                ets[i].setText(decoder.getTexts().get(i));
+            }
         }
-
-
 
 
 
@@ -60,11 +64,14 @@ public class DecodeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //calculate progress
                 pc = new ProgressCalManager();
-                progress = pc.calProgress(ets, tvs);
 
+                //isDone 계산해주기
+                progress = pc.calProgress(ets, tvs);
+                isDone = pc.calIsDone(ets, tvs);
 
                 Intent result = new Intent();
                 result.putExtra("progress", progress);
+                result.putExtra("isDone", isDone);
                 setResult(RESULT_OK, result);
                 finish();
             }
@@ -74,19 +81,21 @@ public class DecodeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        super.onBackPressed();
+
 
 
         //calculate progress
         pc = new ProgressCalManager();
-        progress = pc.calProgress(ets, tvs);
 
+        //isDone 계산해주기
+        progress = pc.calProgress(ets, tvs);
+        isDone = pc.calIsDone(ets, tvs);
 
         Intent result = new Intent();
         result.putExtra("progress", progress);
+        result.putExtra("isDone", isDone);
         setResult(RESULT_OK, result);
         finish();
-
     }
 
 

@@ -70,9 +70,11 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == REQUEST_DECODE){
-            Log.d(TAG, "progress = "+decoders[activeDecoder].getProgress());
-            Log.d(TAG, "progress_result = " + data.getIntExtra("progress", -1));
+            Log.d(TAG, "progress_result = " + data.getIntExtra("progress", 0));
             decoders[activeDecoder].setProgress(data.getIntExtra("progress", 0));
+            decoders[activeDecoder].setIsDone(data.getBooleanArrayExtra("isDone"));
+            Log.d(TAG, decoders[activeDecoder].getIsDone().toString());
+
         }
     }
 
