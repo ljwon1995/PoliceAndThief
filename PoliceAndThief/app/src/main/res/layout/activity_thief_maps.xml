@@ -13,9 +13,9 @@ tools:context=".ThiefActivity">
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Demo Button"
+        android:text="Decode!"
         android:id="@+id/decodeBtn"
-        android:gravity="bottom"
+        android:gravity="right|top"
         android:visibility="invisible"
         />
 
