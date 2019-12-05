@@ -15,7 +15,6 @@ tools:context=".ThiefActivity">
         android:layout_height="wrap_content"
         android:text="Decode!"
         android:id="@+id/decodeBtn"
-        android:gravity="right|top"
         android:visibility="invisible"
         />
 
