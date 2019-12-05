@@ -19,7 +19,7 @@ public class DecodeActivity extends AppCompatActivity {
     private Button saveBtn;
     private TextView[] tvs;
     private EditText[] ets;
-
+    private ProgressCalManager pc;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -59,6 +59,9 @@ public class DecodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //calculate progress
+                pc = new ProgressCalManager();
+                progress = pc.calProgress(ets, tvs);
+
 
                 Intent result = new Intent();
                 result.putExtra("progress", progress);
@@ -75,6 +78,9 @@ public class DecodeActivity extends AppCompatActivity {
 
 
         //calculate progress
+        pc = new ProgressCalManager();
+        progress = pc.calProgress(ets, tvs);
+
 
         Intent result = new Intent();
         result.putExtra("progress", progress);
