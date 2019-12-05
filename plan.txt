@@ -77,4 +77,10 @@ decode 버튼을 누를 시 Decode Activity로 넘어감
 
 
 
+trouble shooting :
+
+server 연산 줄이도록! 앱단에서 비교해서 set value 하기!
+tread 종료
+
+
 

@@ -3,6 +3,7 @@ package com.example.policeandthief;
 import androidx.fragment.app.FragmentActivity;
 import android.location.Location;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,6 +16,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private GpsController gpsController;
+    private Button decoderBtn;
 
 
     @Override
@@ -29,6 +31,8 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
         ThiefLocSender tls = new ThiefLocSender(ThiefActivity.this, this);
         tls.start();
+
+        decoderBtn = findViewById(R.id.decodeBtn);
 
     }
 
@@ -55,7 +59,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
             mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
             mMap.setMyLocationEnabled(true);
 
-            ThiefLocGetter tlg = new ThiefLocGetter(mMap);
+            ThiefLocGetter tlg = new ThiefLocGetter(mMap, ThiefActivity.this, decoderBtn);
             tlg.start();
 
         } else {

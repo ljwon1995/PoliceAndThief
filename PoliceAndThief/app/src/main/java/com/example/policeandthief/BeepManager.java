@@ -21,7 +21,6 @@ public class BeepManager extends Thread{
         while(true) {
             tg.startTone(ToneGenerator.TONE_CDMA_PIP, 100);
             try {
-                Log.d("LocGetter!", "Sleep : "+ (distance * 10));
                 Thread.sleep(distance * 10);
             } catch (Exception e) {
                 e.printStackTrace();

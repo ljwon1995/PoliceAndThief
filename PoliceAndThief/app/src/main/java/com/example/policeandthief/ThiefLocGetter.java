@@ -1,14 +1,15 @@
 package com.example.policeandthief;
 
-import android.location.Location;
+import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,11 +38,16 @@ public class ThiefLocGetter extends Thread {
     private float toPoliceDistance;
     private DistanceManager dm;
     private BeepManager beepManager;
+    private Context context;
+    private Button decoderBtn;
 
 
 
 
-    public ThiefLocGetter(GoogleMap map){
+
+
+
+    public ThiefLocGetter(GoogleMap map, Context c, final Button decoder){
         Log.d(TAG, "Enter LogGetter Constructor");
 
         mMap = map;
@@ -57,6 +63,11 @@ public class ThiefLocGetter extends Thread {
         Decoder = new HashMap<>();
         to = new GenericTypeIndicator<HashMap<String, Double>>() {};
         beepManager = new BeepManager();
+
+        context = c;
+        decoderBtn = decoder;
+
+
         ve = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -91,9 +102,16 @@ public class ThiefLocGetter extends Thread {
                 toDecoderDistance = dm.getDistance().get("toDecoder");
 
                 Log.d(TAG, "To Police : " + toPoliceDistance);
+                Toast.makeText(context, "Distance = " + toPoliceDistance, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "To Decoder : " + toDecoderDistance);
                 beepManager.setBeep(toPoliceDistance);
 //                decoderBtnManager.setDecoderVisible(toDecoderDistance);
+                if(toDecoderDistance < 100){
+                    decoderBtn.setVisibility(View.VISIBLE);
+                }
+                else{
+                    decoderBtn.setVisibility(View.INVISIBLE);
+                }
 
 
             }
@@ -114,7 +132,7 @@ public class ThiefLocGetter extends Thread {
         beepManager.start();
         while(flag){
             try {
-                Thread.sleep(1000);
+                Thread.sleep(10000);
                 Log.d(TAG, "sleep");
             }catch (Exception e){
                 e.printStackTrace();

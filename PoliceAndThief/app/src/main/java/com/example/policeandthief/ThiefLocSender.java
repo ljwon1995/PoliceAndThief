@@ -23,6 +23,8 @@ public class ThiefLocSender extends Thread {
     private static final String TAG = "ThiefLocSender!";
     private Location loc;
     private HashMap<String, Double> Thief;
+    private double prevLongitude = -1;
+    private double prevLatititude = -1;
 
     //나중에 key 값 바꿔야함!!
 
@@ -43,17 +45,21 @@ public class ThiefLocSender extends Thread {
             if (gpsController.isGetLocation()) {
                 loc = gpsController.getLoc();
 
-                Thief.put("latitude", loc.getLatitude());
-                Thief.put("longitude", loc.getLongitude());
+                if(prevLatititude != loc.getLatitude() || prevLongitude != loc.getLongitude()){
+
+                    Thief.put("latitude", loc.getLatitude());
+                    Thief.put("longitude", loc.getLongitude());
+                    myRef.setValue(Thief);
+
+                    prevLongitude = loc.getLongitude();
+                    prevLatititude = loc.getLatitude();
+                    Log.d(TAG, "latitude : "+Thief.get("latitude"));
+                    Log.d(TAG, "longitude : " + Thief.get("longitude"));
+
+                }
+
             } else {
                 gpsController.popAlert();
-            }
-            myRef.setValue(Thief);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
 
