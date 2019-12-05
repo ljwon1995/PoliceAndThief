@@ -2,7 +2,6 @@ package com.example.policeandthief;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -40,6 +39,7 @@ public class ThiefLocGetter extends Thread {
     private BeepManager beepManager;
     private Context context;
     private Button decoderBtn;
+    private DecoderBtnManager decoderBtnManager;
 
 
 
@@ -64,8 +64,10 @@ public class ThiefLocGetter extends Thread {
         to = new GenericTypeIndicator<HashMap<String, Double>>() {};
         beepManager = new BeepManager();
 
+
         context = c;
         decoderBtn = decoder;
+        decoderBtnManager = new DecoderBtnManager(decoderBtn);
 
 
         ve = new ValueEventListener() {
@@ -105,15 +107,7 @@ public class ThiefLocGetter extends Thread {
                 Toast.makeText(context, "Distance = " + toPoliceDistance, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "To Decoder : " + toDecoderDistance);
                 beepManager.setBeep(toPoliceDistance);
-//                decoderBtnManager.setDecoderVisible(toDecoderDistance);
-                if(toDecoderDistance < 100){
-                    decoderBtn.setVisibility(View.VISIBLE);
-                }
-                else{
-                    decoderBtn.setVisibility(View.INVISIBLE);
-                }
-
-
+                decoderBtnManager.setDecoderVisible(toDecoderDistance);
             }
 
             @Override
