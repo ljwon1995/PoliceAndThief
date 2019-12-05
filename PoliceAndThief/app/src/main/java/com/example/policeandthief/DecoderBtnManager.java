@@ -13,8 +13,19 @@ public class DecoderBtnManager {
     }
 
 
-    public void setDecoderVisible(float distance){
-        if(distance < 50){
+    public void setDecoderVisible(float[] distances){
+
+        boolean setFlag = true;
+
+        for(int i = 0; i < 5; i++){
+            if(distances[i] > 50){
+                setFlag = false;
+                break;
+            }
+        }
+
+
+        if(setFlag){
             decoderBtn.setVisibility(View.VISIBLE);
         }
         else{

@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,6 +21,8 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private GpsController gpsController;
     private Button decoderBtn;
+    private Decoder[] decoders;
+    private static final String TAG = "ThiefActivity!";
 
 
     @Override
@@ -32,6 +35,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.thief_map);
         mapFragment.getMapAsync(this);
 
+
         ThiefLocSender tls = new ThiefLocSender(ThiefActivity.this, this);
         tls.start();
 
@@ -40,9 +44,11 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ThiefActivity.this, DecodeActivity.class);
+                //디코드 정보 intent에 넣어주기
                 startActivity(intent);
             }
         });
+
 
     }
 
@@ -69,7 +75,17 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
             mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
             mMap.setMyLocationEnabled(true);
 
-            ThiefLocGetter tlg = new ThiefLocGetter(mMap, ThiefActivity.this, decoderBtn);
+
+            decoders = new Decoder[5];
+            for(int i = 0; i < 5; i++) {
+                decoders[i] = new Decoder();
+            }
+
+            new DecoderInitializer(decoders);
+            Log.d(TAG, ""+decoders[0].getLocation().get("latitude"));
+
+
+            ThiefLocGetter tlg = new ThiefLocGetter(mMap, ThiefActivity.this, decoderBtn, decoders);
             tlg.start();
 
         } else {

@@ -29,17 +29,17 @@ public class ThiefLocGetter extends Thread {
     private AllLocation allLoc;
     private HashMap<String, Double> Thief;
     private HashMap<String, Double> Police;
-    private HashMap<String, Double> Decoder;
     private GenericTypeIndicator<HashMap<String, Double>> to;
     private GoogleMap mMap;
     private LatLng curPos;
-    private float toDecoderDistance;
+    private float[] toDecoderDistance;
     private float toPoliceDistance;
     private DistanceManager dm;
     private BeepManager beepManager;
     private Context context;
     private Button decoderBtn;
     private DecoderBtnManager decoderBtnManager;
+    private Decoder[] decoders;
 
 
 
@@ -47,7 +47,7 @@ public class ThiefLocGetter extends Thread {
 
 
 
-    public ThiefLocGetter(GoogleMap map, Context c, final Button decoder){
+    public ThiefLocGetter(GoogleMap map, Context c, Button decoder_btn, Decoder[] decs){
         Log.d(TAG, "Enter LogGetter Constructor");
 
         mMap = map;
@@ -56,18 +56,19 @@ public class ThiefLocGetter extends Thread {
         myRef = database.getReference();
         flag = true;
 
-
+        toDecoderDistance = new float[5];
         allLoc = new AllLocation();
         Thief = new HashMap<>();
         Police = new HashMap<>();
-        Decoder = new HashMap<>();
         to = new GenericTypeIndicator<HashMap<String, Double>>() {};
         beepManager = new BeepManager();
 
 
         context = c;
-        decoderBtn = decoder;
+        decoderBtn = decoder_btn;
         decoderBtnManager = new DecoderBtnManager(decoderBtn);
+
+        this.decoders = decs;
 
 
         ve = new ValueEventListener() {
@@ -85,27 +86,30 @@ public class ThiefLocGetter extends Thread {
                     Police = dataSnapshot.child(key).child("Police").getValue(to);
                 }
 
-                if(dataSnapshot.child(key).child("Decoder").exists()){
-                    Decoder = dataSnapshot.child(key).child("Decoder").getValue(to);
-                }
-
                 Log.d(TAG, "Thief = " + Thief.toString());
                 Log.d(TAG, "Police = " + Police.toString());
-                Log.d(TAG, "Decoder = " + Decoder.toString());
 
                 allLoc.setThief(Thief);
                 allLoc.setPolice(Police);
-                allLoc.setDecoder(Decoder);
-
 
 //                    get distance from police and decoder;
-                dm = new DistanceManager(allLoc);
+                dm = new DistanceManager(allLoc, decoders);
+
+
                 toPoliceDistance = dm.getDistance().get("toPolice");
-                toDecoderDistance = dm.getDistance().get("toDecoder");
+
+
+                for(int i =0 ;i < 5; i++){
+                    toDecoderDistance[i] = dm.getDistance().get("toDecoder" + i);
+                }
+
 
                 Log.d(TAG, "To Police : " + toPoliceDistance);
                 Toast.makeText(context, "Distance = " + toPoliceDistance, Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "To Decoder : " + toDecoderDistance);
+                for(int i = 0; i < 5; i++){
+                    Log.d(TAG, "To Decoder" + i + " : " + toDecoderDistance[0]);
+                }
+
                 beepManager.setBeep(toPoliceDistance);
                 decoderBtnManager.setDecoderVisible(toDecoderDistance);
             }

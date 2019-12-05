@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class AllLocation {
     private HashMap<String, Double> Police;
     private HashMap<String, Double> Thief;
-    private HashMap<String, Double> Decoder;
+
 
     public HashMap<String, Double> getPolice() {
         return Police;
@@ -23,11 +23,4 @@ public class AllLocation {
         Thief = thief;
     }
 
-    public HashMap<String, Double> getDecoder() {
-        return Decoder;
-    }
-
-    public void setDecoder(HashMap<String, Double> decoder) {
-        Decoder = decoder;
-    }
 }

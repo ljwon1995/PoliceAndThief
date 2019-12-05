@@ -25,7 +25,7 @@ public class PoliceLocGetter extends Thread {
     private AllLocation allLoc;
     private HashMap<String, Double> Thief;
     private HashMap<String, Double> Police;
-    private HashMap<String, Double> Decoder;
+
     private GenericTypeIndicator<HashMap<String, Double>> to;
     private GoogleMap mMap;
 
@@ -38,11 +38,9 @@ public class PoliceLocGetter extends Thread {
         myRef = database.getReference();
         flag = true;
 
-
         allLoc = new AllLocation();
         Thief = new HashMap<>();
         Police = new HashMap<>();
-        Decoder = new HashMap<>();
 
         to = new GenericTypeIndicator<HashMap<String, Double>>() {};
         ve = new ValueEventListener() {
@@ -60,19 +58,12 @@ public class PoliceLocGetter extends Thread {
                     Police = dataSnapshot.child(key).child("Police").getValue(to);
                 }
 
-                if(dataSnapshot.child(key).child("Decoder").exists()){
-                    Decoder = dataSnapshot.child(key).child("Decoder").getValue(to);
-                }
-
                 Log.d(TAG, "Thief = " + Thief.toString());
                 Log.d(TAG, "Police = " + Police.toString());
-                Log.d(TAG, "Decoder = " + Decoder.toString());
+
 
                 allLoc.setThief(Thief);
                 allLoc.setPolice(Police);
-                allLoc.setDecoder(Decoder);
-
-
             }
 
             @Override
