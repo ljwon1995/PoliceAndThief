@@ -1,6 +1,7 @@
 package com.example.policeandthief;
 
 import android.location.Location;
+import android.util.Log;
 
 
 import java.util.HashMap;
@@ -9,6 +10,7 @@ public class DistanceManager {
 
     private AllLocation allLoc;
     private Decoder[] decoders;
+    private static final String TAG = "DistanceManager!";
 
     public DistanceManager(AllLocation loc, Decoder[] decs){
         allLoc = loc;
@@ -42,9 +44,11 @@ public class DistanceManager {
 
         for(int i = 0; i < 5; i++){
 
+
             decoderLocs[i].setLatitude(decoders[i].getLocation().get("latitude"));
             decoderLocs[i].setLongitude(decoders[i].getLocation().get("longitude"));
             toDecoder[i] = thief.distanceTo(decoderLocs[i]);
+
             ans.put("toDecoder"+i, toDecoder[i]);
 
         }

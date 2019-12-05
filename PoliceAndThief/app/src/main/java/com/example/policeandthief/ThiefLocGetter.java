@@ -107,7 +107,7 @@ public class ThiefLocGetter extends Thread {
                 Log.d(TAG, "To Police : " + toPoliceDistance);
                 Toast.makeText(context, "Distance = " + toPoliceDistance, Toast.LENGTH_SHORT).show();
                 for(int i = 0; i < 5; i++){
-                    Log.d(TAG, "To Decoder" + i + " : " + toDecoderDistance[0]);
+                    Log.d(TAG, "To Decoder" + i + " : " + toDecoderDistance[i]);
                 }
 
                 beepManager.setBeep(toPoliceDistance);
@@ -138,5 +138,15 @@ public class ThiefLocGetter extends Thread {
         }
 
         myRef.removeEventListener(ve);
+        beepManager.setFlag(false);
+        try {
+            beepManager.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setFlag(boolean b){
+        flag = b;
     }
 }

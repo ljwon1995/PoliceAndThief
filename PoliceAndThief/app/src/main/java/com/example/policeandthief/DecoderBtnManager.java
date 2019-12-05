@@ -1,11 +1,13 @@
 package com.example.policeandthief;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 public class DecoderBtnManager {
 
     private Button decoderBtn;
+    private final static String TAG = "DecodeBtnManager!";
 
 
     public DecoderBtnManager(Button decBtn) {
@@ -15,15 +17,16 @@ public class DecoderBtnManager {
 
     public void setDecoderVisible(float[] distances, Decoder[] d){
 
-        boolean setFlag = true;
+        boolean setFlag = false;
 
         for(int i = 0; i < 5; i++){
+            Log.d(TAG, "distances" + i + " : " +distances[i]);
             if(distances[i] > 50){
-                setFlag = false;
                 d[i].setActive(false);
             }
             else{
                 d[i].setActive(true);
+                setFlag = true;
             }
         }
 
