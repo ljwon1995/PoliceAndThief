@@ -45,6 +45,13 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 Intent intent = new Intent(ThiefActivity.this, DecodeActivity.class);
                 //디코드 정보 intent에 넣어주기
+                for(int i = 0; i < 5; i++){
+                    if(decoders[i].isActive()){
+                        intent.putExtra("decoder", decoders[i]);
+                        break;
+                    }
+                }
+
                 startActivity(intent);
             }
         });

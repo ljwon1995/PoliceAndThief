@@ -1,13 +1,15 @@
 package com.example.policeandthief;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Decoder {
+public class Decoder implements Serializable {
 
     private ArrayList<String> texts;
     private int progress;
     private HashMap<String, Double> location;
+    private boolean isActive;
 
     public Decoder(){
         texts = new ArrayList<>();
@@ -17,9 +19,19 @@ public class Decoder {
         texts.add("무궁화 삼천리 화려강산");
         texts.add("대한사람 대한으로 길이 보전하세");
 
+        isActive = false;
+
 
         progress = 0;
 
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public ArrayList<String> getTexts() {

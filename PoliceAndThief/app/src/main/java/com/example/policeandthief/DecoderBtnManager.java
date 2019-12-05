@@ -13,14 +13,17 @@ public class DecoderBtnManager {
     }
 
 
-    public void setDecoderVisible(float[] distances){
+    public void setDecoderVisible(float[] distances, Decoder[] d){
 
         boolean setFlag = true;
 
         for(int i = 0; i < 5; i++){
             if(distances[i] > 50){
                 setFlag = false;
-                break;
+                d[i].setActive(false);
+            }
+            else{
+                d[i].setActive(true);
             }
         }
 

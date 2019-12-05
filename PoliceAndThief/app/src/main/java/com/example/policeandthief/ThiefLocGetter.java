@@ -111,7 +111,7 @@ public class ThiefLocGetter extends Thread {
                 }
 
                 beepManager.setBeep(toPoliceDistance);
-                decoderBtnManager.setDecoderVisible(toDecoderDistance);
+                decoderBtnManager.setDecoderVisible(toDecoderDistance, decoders);
             }
 
             @Override
