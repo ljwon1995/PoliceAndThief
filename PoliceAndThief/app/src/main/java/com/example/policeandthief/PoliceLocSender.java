@@ -23,6 +23,8 @@ public class PoliceLocSender extends Thread {
     private static final String TAG = "PoliceLocSender!";
     private Location loc;
     private HashMap<String, Double> Police;
+    private double prevLongitude = -1;
+    private double prevLatititude = -1;
 
 
     //나중에 key 바꿔야함
@@ -34,7 +36,6 @@ public class PoliceLocSender extends Thread {
         a = activity;
         gpsController = new GpsController(c, a);
         Police = new HashMap<>();
-        Log.d(TAG, gpsController.toString());
     }
 
     public void run(){
@@ -43,18 +44,21 @@ public class PoliceLocSender extends Thread {
             if (gpsController.isGetLocation()) {
                 loc = gpsController.getLoc();
 
-                Police.put("latitude", loc.getLatitude());
-                Police.put("longitude", loc.getLongitude());
+                if(prevLatititude != loc.getLatitude() || prevLongitude != loc.getLongitude()){
+
+                    Police.put("latitude", loc.getLatitude());
+                    Police.put("longitude", loc.getLongitude());
+                    myRef.setValue(Police);
+
+                    prevLongitude = loc.getLongitude();
+                    prevLatititude = loc.getLatitude();
+                }
+
+
             } else {
                 gpsController.popAlert();
             }
-            myRef.setValue(Police);
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
 
     }
