@@ -10,7 +10,7 @@ public class Decoder implements Serializable {
     private int progress;
     private HashMap<String, Double> location;
     private boolean isActive;
-    private boolean[] isDone;
+    private ArrayList<Boolean> isDone;
 
 
     public Decoder(){
@@ -25,18 +25,18 @@ public class Decoder implements Serializable {
 
 
         progress = 0;
-        isDone = new boolean[4];
+        isDone = new ArrayList<>();
         for(int i = 0; i < 4; i++){
-            isDone[i] = false;
+            isDone.add(false);
         }
 
     }
 
-    public boolean[] getIsDone() {
+    public ArrayList<Boolean> getIsDone() {
         return isDone;
     }
 
-    public void setIsDone(boolean[] isDone) {
+    public void setIsDone(ArrayList<Boolean> isDone) {
         this.isDone = isDone;
     }
 

@@ -52,7 +52,7 @@ public class DecodeActivity extends AppCompatActivity {
         for(int i = 0; i < 4; i++){
             tvs[i].setText(decoder.getTexts().get(i));
             //isDone 보고 ets set 해주기
-            if(decoder.getIsDone()[i] == true){
+            if(decoder.getIsDone().get(i) == true){
                 ets[i].setText(decoder.getTexts().get(i));
             }
         }

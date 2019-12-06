@@ -3,6 +3,8 @@ package com.example.policeandthief;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +15,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ThiefActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -27,13 +35,15 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
     private ThiefLocSender tls;
     private ThiefLocGetter tlg;
     private int activeDecoder;
-
+    private DecoderLocSender dls;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thief_maps);
+
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -43,6 +53,8 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
         tls = new ThiefLocSender(ThiefActivity.this, this);
         tls.start();
+
+        dls = new DecoderLocSender();
 
         decoderBtn = findViewById(R.id.decodeBtn);
         decoderBtn.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +84,23 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
         if(requestCode == REQUEST_DECODE){
             Log.d(TAG, "progress_result = " + data.getIntExtra("progress", 0));
             decoders[activeDecoder].setProgress(data.getIntExtra("progress", 0));
-            decoders[activeDecoder].setIsDone(data.getBooleanArrayExtra("isDone"));
+            boolean[] resultDone = data.getBooleanArrayExtra("isDone");
+
+            ArrayList<Boolean> b = new ArrayList<>();
+            for(int i = 0; i < 4; i++){
+                b.add(resultDone[i]);
+            }
+
+            decoders[activeDecoder].setIsDone(b);
             Log.d(TAG, decoders[activeDecoder].getIsDone().toString());
+
+
+            //send decoders info to server!
+            dls.sendToServer(decoders);
+
+            //맵에 디코더 찍기!
+            putDecoderOnMap();
+
 
         }
     }
@@ -118,7 +145,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
             LatLng CUR = new LatLng(loc.getLatitude(), loc.getLongitude());
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(CUR));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
             mMap.setMyLocationEnabled(true);
 
 
@@ -127,12 +154,17 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
                 decoders[i] = new Decoder();
             }
 
-            new DecoderInitializer(decoders);
+            new DecoderInitializer(decoders, CUR);
+            //send decoders info to server!
+            dls.sendToServer(decoders);
 
-            for(int i = 0; i < 5; i++) {
-                Log.d(TAG, "Decoder" + i + " : "+decoders[i].getLocation().get("latitude"));
-                Log.d(TAG, "Decoder" + i + " : "+decoders[i].getLocation().get("longitude"));
-            }
+
+
+
+
+            //맵에 디코더 찍기!!
+            putDecoderOnMap();
+
 
 
 
@@ -143,6 +175,49 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
             gpsController.popAlert();
         }
 
+    }
+
+    public void putDecoderOnMap(){
+        MarkerOptions markerOptions = new MarkerOptions();
+
+
+
+
+        for(int i = 0; i < 5; i++){
+
+            BitmapDrawable bitmapDrawable;
+
+            switch(decoders[i].getProgress()){
+
+                case 25:
+                    bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.decoder_img25);
+                    break;
+                case 50:
+                    bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.decoder_img50);
+                    break;
+                case 75:
+                    bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.decoder_img75);
+                    break;
+                case 100:
+                    bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.decoder_img100);
+                    break;
+
+                default:
+                    bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.decoder_img);
+                    break;
+
+            }
+            Bitmap b = bitmapDrawable.getBitmap();
+            Bitmap decoderImg = Bitmap.createScaledBitmap(b, 70, 70, false);
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(decoderImg));
+
+
+
+
+            LatLng pos = new LatLng(decoders[i].getLocation().get("latitude"), decoders[i].getLocation().get("longitude"));
+            markerOptions.position(pos);
+            mMap.addMarker(markerOptions);
+        }
     }
 
     @Override
