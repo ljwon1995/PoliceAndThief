@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="Catch"
             android:id="@+id/catchBtn"
-            android:visibility="visible"
+            android:visibility="invisible"
             android:layout_above="@+id/progressBtn"
             />
 
@@ -41,7 +41,7 @@
                 android:indeterminate="false"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:scaleY="20"
-                android:progress="50"
+                android:progress="0"
                 />
 
             <Button

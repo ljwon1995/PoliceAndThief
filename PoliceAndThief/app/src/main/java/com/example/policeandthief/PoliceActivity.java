@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,6 +35,9 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
     private ArrayList<Decoder> decoders;
     private PoliceLocSender pls;
     private PoliceLocGetter plg;
+    private ItemButtonController ibc;
+    private ProgressBar itemBar;
+    private Button itemBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +52,6 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
         pls = new PoliceLocSender(PoliceActivity.this, this);
         pls.start();
 
-        plg = new PoliceLocGetter(mMap);
-        plg.start();
 
     }
 
@@ -98,6 +101,16 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
         } else {
             gpsController.popAlert();
         }
+
+        plg = new PoliceLocGetter(mMap);
+        plg.start();
+
+        //아이템 버튼 그리기 + 아이템 버튼 쓰레드 만들고 시작
+        itemBar = findViewById(R.id.progress);
+        itemBtn = findViewById(R.id.itemBtn);
+
+        ibc = new ItemButtonController(itemBar, itemBtn, PoliceActivity.this, mMap);
+        ibc.start();
 
     }
 

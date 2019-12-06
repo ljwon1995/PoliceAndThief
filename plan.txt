@@ -86,5 +86,5 @@ trouble shooting :
 server 연산 줄이도록! 앱단에서 비교해서 set value 하기!
 tread 종료
 agile 형식의 프로그래밍 .. --> 큰 설계를 안하고 하다 보니깐, 여러 변수가 나옴.. redundant 한 코드들 발생
-
+진행표시되는버튼만들기!
 
