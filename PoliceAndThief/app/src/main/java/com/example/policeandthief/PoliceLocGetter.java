@@ -90,4 +90,8 @@ public class PoliceLocGetter extends Thread {
 
         myRef.removeEventListener(ve);
     }
+
+    public void setFlag(boolean b){
+        flag = b;
+    }
 }

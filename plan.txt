@@ -76,8 +76,8 @@ decode 버튼을 누를 시 Decode Activity로 넘어감
 
 
 
-디코더 모두 서버단으로 정보 올리기.
-
+디코더 정보 변경 시!
+시간나면 marker 지우고 다시 add하기
 
 
 
