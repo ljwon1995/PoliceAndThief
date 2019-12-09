@@ -3,10 +3,12 @@ package com.example.policeandthief;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -39,11 +41,17 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
     private ProgressBar itemBar;
     private Button itemBtn;
     private Button catch_btn;
+    private WinnerChecker winnerChecker;
+    private DatabaseReference winRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_police_maps);
 
+
+
+
+        winnerChecker = new WinnerChecker();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.police_map);
@@ -96,6 +104,9 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
                 }
             });
 
+            winRef = database.getReference().child("Test").child("Winner");
+            winRef.setValue(-1);
+
 
 
         } else {
@@ -103,6 +114,43 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
         }
 
         catch_btn = findViewById(R.id.catchBtn);
+        catch_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                winnerChecker.setPoliceWin();
+                Intent intent = new Intent(PoliceActivity.this, WinnerActivity.class);
+                intent.putExtra("winner", 0);
+                startActivity(intent);
+            }
+        });
+
+        database = FirebaseDatabase.getInstance();
+
+        winRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int winner = dataSnapshot.getValue(Integer.class);
+
+                if(winner == 0){
+                    Intent intent = new Intent(PoliceActivity.this, WinnerActivity.class);
+                    intent.putExtra("winner", 0);
+                    startActivity(intent);
+                }
+
+                else if(winner == 1){
+                    Intent intent = new Intent(PoliceActivity.this, WinnerActivity.class);
+                    intent.putExtra("winner", 1);
+                    startActivity(intent);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         plg = new PoliceLocGetter(mMap, catch_btn);
         plg.start();
 
@@ -113,6 +161,9 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
 
         ibc = new ItemButtonController(itemBar, itemBtn, PoliceActivity.this, mMap);
         ibc.start();
+
+
+
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.policeandthief;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
@@ -18,6 +19,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -33,6 +39,9 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
     private ThiefLocGetter tlg;
     private int activeDecoder;
     private DecoderLocSender dls;
+    private WinnerChecker winnerChecker;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
 
     @Override
@@ -42,6 +51,34 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
 
 
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference().child("Test").child("Winner");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int winner = dataSnapshot.getValue(Integer.class);
+
+                if(winner == 0){
+                    Intent intent = new Intent(ThiefActivity.this, WinnerActivity.class);
+                    intent.putExtra("winner", 0);
+                    startActivity(intent);
+                }
+
+                else if(winner == 1){
+                    Intent intent = new Intent(ThiefActivity.this, WinnerActivity.class);
+                    intent.putExtra("winner", 1);
+                    startActivity(intent);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        winnerChecker = new WinnerChecker();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.thief_map);
@@ -97,6 +134,21 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
             //맵에 디코더 찍기!
             putDecoderOnMap();
+
+            for(int i = 0; i < 5; i ++){
+                int count = 0;
+
+                if(decoders[i].getProgress() == 100){
+                    count++;
+                }
+
+                if(count >= 3){
+                    winnerChecker.setThiefWin();
+                    Intent intent = new Intent(ThiefActivity.this, WinnerActivity.class);
+                    intent.putExtra("winner", 1);
+                    startActivity(intent);
+                }
+            }
 
 
         }

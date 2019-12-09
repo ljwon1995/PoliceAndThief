@@ -38,6 +38,7 @@
             android:name=".PoliceActivity"
             android:label="@string/title_activity_maps"></activity>
         <activity android:name=".DecodeActivity"></activity>
+        <activity android:name=".WinnerActivity"></activity>
 
         <activity android:name=".MainActivity">
             <intent-filter>
