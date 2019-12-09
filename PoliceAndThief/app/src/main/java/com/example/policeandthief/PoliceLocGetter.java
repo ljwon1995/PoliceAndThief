@@ -1,6 +1,7 @@
 package com.example.policeandthief;
 
 import android.util.Log;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
@@ -29,8 +30,13 @@ public class PoliceLocGetter extends Thread {
     private GenericTypeIndicator<HashMap<String, Double>> to;
     private GoogleMap mMap;
 
+    private PoliceDistanceManager pdm;
 
-    public PoliceLocGetter(GoogleMap map){
+    private float toThiefDistance;
+    private CatchBtnManager catchBtnManager;
+    private Button catchBtn;
+
+    public PoliceLocGetter(GoogleMap map, Button catch_btn){
 
         mMap = map;
 
@@ -41,6 +47,8 @@ public class PoliceLocGetter extends Thread {
         allLoc = new AllLocation();
         Thief = new HashMap<>();
         Police = new HashMap<>();
+        catchBtn = catch_btn;
+        catchBtnManager = new CatchBtnManager(catchBtn);
 
         to = new GenericTypeIndicator<HashMap<String, Double>>() {};
         ve = new ValueEventListener() {
@@ -64,6 +72,13 @@ public class PoliceLocGetter extends Thread {
 
                 allLoc.setThief(Thief);
                 allLoc.setPolice(Police);
+                pdm = new PoliceDistanceManager(allLoc);
+                toThiefDistance = pdm.getDistance().get("toThief");
+                Log.d(TAG, "To Thief Distance = " + toThiefDistance);
+
+                catchBtnManager.setCatchVisible(toThiefDistance);
+
+
             }
 
             @Override

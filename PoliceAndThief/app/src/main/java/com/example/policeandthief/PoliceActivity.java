@@ -38,7 +38,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
     private ItemButtonController ibc;
     private ProgressBar itemBar;
     private Button itemBtn;
-
+    private Button catch_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,12 +102,14 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
             gpsController.popAlert();
         }
 
-        plg = new PoliceLocGetter(mMap);
+        catch_btn = findViewById(R.id.catchBtn);
+        plg = new PoliceLocGetter(mMap, catch_btn);
         plg.start();
 
         //아이템 버튼 그리기 + 아이템 버튼 쓰레드 만들고 시작
         itemBar = findViewById(R.id.progress);
         itemBtn = findViewById(R.id.itemBtn);
+
 
         ibc = new ItemButtonController(itemBar, itemBtn, PoliceActivity.this, mMap);
         ibc.start();
