@@ -26,6 +26,7 @@ public class RoomActivity extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private String userId;
 
 
     @Override
@@ -37,6 +38,7 @@ public class RoomActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         roomId = intent.getStringExtra("RoomId");
+        userId = intent.getStringExtra("UserId");
 
         changeBtn = findViewById(R.id.change_btn);
         startBtn = findViewById(R.id.start_btn);
@@ -52,6 +54,16 @@ public class RoomActivity extends AppCompatActivity {
                 r = dataSnapshot.getValue(RoomItem.class);
                 policeTv.setText(r.getPoliceId());
                 thiefTv.setText(r.getThiefId());
+                if(r.getGameStart() == 1){
+                    if(r.getPoliceId().compareTo(userId) == 0){
+                        Intent intent = new Intent(RoomActivity.this, PoliceActivity.class);
+                        startActivity(intent);
+                    }
+                    else{
+                        Intent intent = new Intent(RoomActivity.this, ThiefActivity.class);
+                        startActivity(intent);
+                    }
+                }
 
             }
 
@@ -86,6 +98,16 @@ public class RoomActivity extends AppCompatActivity {
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                r.setGameStart(1);
+                myRef.setValue(r);
+                if(r.getPoliceId().compareTo(userId) == 0){
+                    Intent intent = new Intent(RoomActivity.this, PoliceActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Intent intent = new Intent(RoomActivity.this, ThiefActivity.class);
+                    startActivity(intent);
+                }
 
             }
         });
