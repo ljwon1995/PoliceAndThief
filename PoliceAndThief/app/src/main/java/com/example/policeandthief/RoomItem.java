@@ -42,4 +42,20 @@ public class RoomItem {
     public void setPersons(int persons) {
         this.persons = persons;
     }
+
+    public String getPoliceId() {
+        return policeId;
+    }
+
+    public void setPoliceId(String policeId) {
+        this.policeId = policeId;
+    }
+
+    public String getThiefId() {
+        return thiefId;
+    }
+
+    public void setThiefId(String thiefId) {
+        this.thiefId = thiefId;
+    }
 }

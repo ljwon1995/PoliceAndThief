@@ -1,6 +1,7 @@
 package com.example.policeandthief;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ public class RoomAdaptor extends BaseAdapter{
         this.listview.addAll(roomList);
     }
 
-    public void setBoardList(List<RoomItem> roomList) {
+    public void setRoomList(List<RoomItem> roomList) {
         this.roomList = roomList;
     }
 
@@ -42,9 +43,11 @@ public class RoomAdaptor extends BaseAdapter{
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             holder = new RoomAdaptor.ViewHolder();
-            convertView = inflater.inflate(R.layout.activity_room_list, null);
+            convertView = inflater.inflate(R.layout.activity_room_item, null);
 
             // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
+
+
             holder.tv1 = (TextView) convertView.findViewById(R.id.txt_room_name) ;
             holder.tv2 = (TextView) convertView.findViewById(R.id.txt_id) ;
             holder.tv3= (TextView) convertView.findViewById(R.id.txt_c_persons) ;
@@ -53,6 +56,7 @@ public class RoomAdaptor extends BaseAdapter{
         else{
             holder = (RoomAdaptor.ViewHolder) convertView.getTag();
         }
+
 
         holder.tv1.setText(potion.getRoomName());
         holder.tv2.setText(potion.getMasterId());

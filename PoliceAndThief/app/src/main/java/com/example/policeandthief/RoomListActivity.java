@@ -3,20 +3,13 @@ package com.example.policeandthief;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,7 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 
 public class RoomListActivity extends AppCompatActivity {
@@ -35,7 +27,6 @@ public class RoomListActivity extends AppCompatActivity {
     private Context c = this;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    private ArrayList<RoomItem> arraylist;
     private final static String TAG = "RoomListActivity!";
     private String userId;
     Button createRoomBtn;
@@ -46,6 +37,8 @@ public class RoomListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_list);
 
+        Log.d(TAG, "onCreate");
+
 
         Intent intent = getIntent();
         userId = intent.getStringExtra("ID");
@@ -54,7 +47,6 @@ public class RoomListActivity extends AppCompatActivity {
 
         list = new ArrayList<RoomItem>();
 
-        arraylist = new ArrayList<RoomItem>();
 
         adaptor = new RoomAdaptor(c, list);
 
@@ -66,6 +58,11 @@ public class RoomListActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, ""+dataSnapshot.getChildrenCount());
 
+                list.clear();
+                adaptor.setRoomList(list);
+                adaptor.notifyDataSetChanged();
+
+
                 Iterator<DataSnapshot> itr = dataSnapshot.getChildren().iterator();
                 Log.d(TAG,  "get iterator");
                 while(itr.hasNext()){
@@ -73,7 +70,7 @@ public class RoomListActivity extends AppCompatActivity {
                     Log.d(TAG, r.getRoomName());
                     list.add(r);
                 }
-                adaptor.setBoardList(list);
+                adaptor.setRoomList(list);
                 listview.setAdapter(adaptor);
             }
 
@@ -94,7 +91,7 @@ public class RoomListActivity extends AppCompatActivity {
             }
         });
 
-        createRoomBtn = findViewById(R.id.create_room_btn);
+        createRoomBtn = findViewById(R.id.createBtn);
         createRoomBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,44 +100,6 @@ public class RoomListActivity extends AppCompatActivity {
         });
 
     }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
-        list.clear();
-        adaptor.setBoardList(list);
-
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
-        Log.d(TAG,  "get ref");
-        myRef.child("Rooms").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, ""+dataSnapshot.getChildrenCount());
-
-                Iterator<DataSnapshot> itr = dataSnapshot.getChildren().iterator();
-                Log.d(TAG,  "get iterator");
-                while(itr.hasNext()){
-                    RoomItem r = itr.next().child("RoomInfo").getValue(RoomItem.class);
-                    Log.d(TAG, r.getRoomName());
-                    list.add(r);
-                }
-                adaptor.setBoardList(list);
-                listview.setAdapter(adaptor);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
 
 
     public void createRoom(){
