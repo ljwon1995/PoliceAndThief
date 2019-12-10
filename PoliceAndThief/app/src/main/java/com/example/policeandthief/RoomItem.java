@@ -7,6 +7,7 @@ public class RoomItem {
     private int persons;
     private String policeId;
     private String thiefId;
+    private int gameStart;
 
     public RoomItem(){
 
@@ -17,6 +18,15 @@ public class RoomItem {
         masterId = mi;
         persons = per;
         policeId = pi;
+        gameStart = 0;
+    }
+
+    public int getGameStart() {
+        return gameStart;
+    }
+
+    public void setGameStart(int gameStart) {
+        this.gameStart = gameStart;
     }
 
     public String getRoomName() {

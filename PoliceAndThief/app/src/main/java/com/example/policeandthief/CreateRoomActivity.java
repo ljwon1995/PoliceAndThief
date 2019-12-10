@@ -71,6 +71,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
         myRef.setValue(r);
         Intent intent = new Intent(CreateRoomActivity.this, RoomActivity.class);
+        intent.putExtra("RoomId", roomName);
         startActivity(intent);
     }
 }

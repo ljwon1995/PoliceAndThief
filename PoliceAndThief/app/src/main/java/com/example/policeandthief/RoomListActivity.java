@@ -86,7 +86,7 @@ public class RoomListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
                 String roomName = list.get(position).getRoomName();
-                intent.putExtra("id", roomName);
+                intent.putExtra("RoomId", roomName);
                 startActivity(intent);
             }
         });
