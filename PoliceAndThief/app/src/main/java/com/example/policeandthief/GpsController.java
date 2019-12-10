@@ -30,8 +30,8 @@ public class GpsController implements LocationListener {
     private Location loc;
 
 
-    private static final long MIN_DISTANCE = 1;
-    private static final long MIN_TIME = 1;
+    private static final long MIN_DISTANCE = 10;
+    private static final long MIN_TIME = 1000;
     private static final int PERMISSIONS_ACCESS_FINE_LOCATION = 100;
     private static final int PERMISSIONS_ACCESS_COARSE_LOCATION = 200;
     private boolean isAccessFineLocationPerm = false;

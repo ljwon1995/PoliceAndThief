@@ -2,7 +2,6 @@ package com.example.policeandthief;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                             expPw = dataSnapshot.child(id).getValue(String.class);
                             if (expPw.compareTo(pw) == 0) {
                                 Toast.makeText(getApplicationContext(), "Succeed", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, RoomListActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
                             else{

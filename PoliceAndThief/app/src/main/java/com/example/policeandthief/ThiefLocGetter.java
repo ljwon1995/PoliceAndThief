@@ -130,7 +130,7 @@ public class ThiefLocGetter extends Thread {
         beepManager.start();
         while(flag){
             try {
-                Thread.sleep(10000);
+                Thread.sleep(10);
                 Log.d(TAG, "sleep");
             }catch (Exception e){
                 e.printStackTrace();
