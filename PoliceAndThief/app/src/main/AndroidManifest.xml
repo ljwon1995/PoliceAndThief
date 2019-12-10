@@ -39,6 +39,9 @@
             android:label="@string/title_activity_maps"></activity>
         <activity android:name=".DecodeActivity"></activity>
         <activity android:name=".WinnerActivity"></activity>
+        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".RoomListActivity"></activity>
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
