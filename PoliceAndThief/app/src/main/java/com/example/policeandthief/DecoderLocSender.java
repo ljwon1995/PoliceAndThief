@@ -13,7 +13,11 @@ public class DecoderLocSender {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private static final String TAG = "DecoderLocSender!";
+    private String roomId;
 
+    public DecoderLocSender(String room){
+        roomId = room;
+    }
 
     void sendToServer(Decoder[] decoders){
 
@@ -26,7 +30,7 @@ public class DecoderLocSender {
             decs.add(decoders[i]);
         }
 
-        myRef.child("Test").child("Decoders").setValue(decs);
+        myRef.child(roomId).child("GameInfo").child("Decoders").setValue(decs);
         Log.d(TAG, "decoders send finished");
     }
 }

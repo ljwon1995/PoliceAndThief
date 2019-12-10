@@ -15,7 +15,7 @@ public class ThiefLocSender extends Thread {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private boolean flag;
-    private String key = "Test";
+
     private GpsController gpsController;
     private Context c;
     private Activity a;
@@ -25,12 +25,13 @@ public class ThiefLocSender extends Thread {
     private HashMap<String, Double> Thief;
     private double prevLongitude = -1;
     private double prevLatititude = -1;
+    private String roomId;
 
-    //나중에 key 값 바꿔야함!!
 
-    public ThiefLocSender(Context context, Activity activity){
+    public ThiefLocSender(Context context, Activity activity, String room){
+        roomId = room;
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child(key).child("Thief");
+        myRef = database.getReference().child(roomId).child("GameInfo").child("Thief");
         flag = true;
         c = context;
         a = activity;

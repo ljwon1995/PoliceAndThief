@@ -37,22 +37,23 @@ public class ItemButtonController extends Thread {
     private GoogleMap mMap;
     private PbInc pbInc;
     private Marker marker;
-
+    private String roomId;
 
 
     private final static String TAG = "IBC!";
 
 
-    public ItemButtonController(ProgressBar pb, Button btn, Context context, GoogleMap map){
+    public ItemButtonController(ProgressBar pb, Button btn, Context context, GoogleMap map, String room){
         progressBar = pb;
         itemBtn = btn;
         flag = true;
         c = context;
         mMap = map;
         pbInc = new PbInc(pb);
+        roomId = room;
 
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child("Test").child("Thief");
+        myRef = database.getReference().child(roomId).child("GameInfo").child("Thief");
 
 
 

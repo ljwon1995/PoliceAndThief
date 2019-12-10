@@ -42,6 +42,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
     private WinnerChecker winnerChecker;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private String roomId;
 
 
     @Override
@@ -49,10 +50,11 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thief_maps);
 
-
+        Intent intent = getIntent();
+        roomId = intent.getStringExtra("RoomId");
 
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child("Test").child("Winner");
+        myRef = database.getReference().child(roomId).child("GameInfo").child("Winner");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -78,7 +80,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
             }
         });
 
-        winnerChecker = new WinnerChecker();
+        winnerChecker = new WinnerChecker(roomId);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.thief_map);
@@ -87,7 +89,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
 
 
-        dls = new DecoderLocSender();
+        dls = new DecoderLocSender(roomId);
 
         decoderBtn = findViewById(R.id.decodeBtn);
         decoderBtn.setOnClickListener(new View.OnClickListener() {
@@ -213,9 +215,9 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
 
 
-            tlg = new ThiefLocGetter(mMap, ThiefActivity.this, decoderBtn, decoders);
+            tlg = new ThiefLocGetter(mMap, ThiefActivity.this, decoderBtn, decoders, roomId);
             tlg.start();
-            tls = new ThiefLocSender(ThiefActivity.this, this);
+            tls = new ThiefLocSender(ThiefActivity.this, this, roomId);
             tls.start();
 
         } else {

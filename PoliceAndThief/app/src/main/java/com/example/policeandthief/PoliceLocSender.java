@@ -15,7 +15,6 @@ public class PoliceLocSender extends Thread {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private boolean flag;
-    private String key = "Test";
     private GpsController gpsController;
     private Context c;
     private Activity a;
@@ -25,17 +24,18 @@ public class PoliceLocSender extends Thread {
     private HashMap<String, Double> Police;
     private double prevLongitude = -1;
     private double prevLatititude = -1;
+    private String roomId;
 
 
-    //나중에 key 바꿔야함
-    public PoliceLocSender(Context context, Activity activity){
+    public PoliceLocSender(Context context, Activity activity, String room){
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child(key).child("Police");
+        myRef = database.getReference().child(roomId).child("GameInfo").child("Police");
         flag = true;
         c = context;
         a = activity;
         gpsController = new GpsController(c, a);
         Police = new HashMap<>();
+        roomId = room;
     }
 
     public void run(){

@@ -23,7 +23,6 @@ public class ThiefLocGetter extends Thread {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private boolean flag;
-    private String key = "Test";
     private ValueEventListener ve;
     private String TAG = "ThiefLocGetter!";
     private AllLocation allLoc;
@@ -40,15 +39,16 @@ public class ThiefLocGetter extends Thread {
     private Button decoderBtn;
     private DecoderBtnManager decoderBtnManager;
     private Decoder[] decoders;
+    private String roomId;
 
 
 
 
 
 
-
-    public ThiefLocGetter(GoogleMap map, Context c, Button decoder_btn, Decoder[] decs){
+    public ThiefLocGetter(GoogleMap map, Context c, Button decoder_btn, Decoder[] decs, String room){
         Log.d(TAG, "Enter LogGetter Constructor");
+        roomId = room;
 
         mMap = map;
 
@@ -78,12 +78,12 @@ public class ThiefLocGetter extends Thread {
                 GenericTypeIndicator<HashMap<String, Double>> to = new GenericTypeIndicator<HashMap<String, Double>>() {};
 
 
-                if(dataSnapshot.child(key).child("Thief").exists()){
-                    Thief = dataSnapshot.child(key).child("Thief").getValue(to);
+                if(dataSnapshot.child(roomId).child("GameInfo").child("Thief").exists()){
+                    Thief = dataSnapshot.child(roomId).child("GameInfo").child("Thief").getValue(to);
                 }
 
-                if(dataSnapshot.child(key).child("Police").exists()){
-                    Police = dataSnapshot.child(key).child("Police").getValue(to);
+                if(dataSnapshot.child(roomId).child("GameInfo").child("Police").exists()){
+                    Police = dataSnapshot.child(roomId).child("GameInfo").child("Police").getValue(to);
                 }
 
                 Log.d(TAG, "Thief = " + Thief.toString());

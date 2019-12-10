@@ -65,9 +65,11 @@ public class RoomActivity extends AppCompatActivity {
                     if (r.getGameStart() == 1) {
                         if (r.getPoliceId().compareTo(userId) == 0) {
                             Intent intent = new Intent(RoomActivity.this, PoliceActivity.class);
+                            intent.putExtra("RoomId", r.getRoomName());
                             startActivity(intent);
                         } else {
                             Intent intent = new Intent(RoomActivity.this, ThiefActivity.class);
+                            intent.putExtra("RoomId", r.getRoomName());
                             startActivity(intent);
                         }
                     }
@@ -111,9 +113,11 @@ public class RoomActivity extends AppCompatActivity {
                     myRef.setValue(r);
                     if (userId.compareTo(r.getPoliceId()) == 0) {
                         Intent intent = new Intent(RoomActivity.this, PoliceActivity.class);
+                        intent.putExtra("RoomId", r.getRoomName());
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(RoomActivity.this, ThiefActivity.class);
+                        intent.putExtra("RoomId", r.getRoomName());
                         startActivity(intent);
                     }
                 }

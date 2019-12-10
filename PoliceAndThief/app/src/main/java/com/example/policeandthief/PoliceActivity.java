@@ -43,21 +43,26 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
     private Button catch_btn;
     private WinnerChecker winnerChecker;
     private DatabaseReference winRef;
+    private String roomId;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_police_maps);
 
 
+        Intent intent = getIntent();
+        roomId = intent.getStringExtra("RoomId");
 
 
-        winnerChecker = new WinnerChecker();
+        winnerChecker = new WinnerChecker(roomId);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.police_map);
         mapFragment.getMapAsync(this);
 
-        pls = new PoliceLocSender(PoliceActivity.this, this);
+        pls = new PoliceLocSender(PoliceActivity.this, this, roomId);
         pls.start();
 
 
@@ -89,7 +94,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
 
             //디코더 맵에 찍기
             database = FirebaseDatabase.getInstance();
-            myRef = database.getReference().child("Test").child("Decoders");
+            myRef = database.getReference().child(roomId).child("GameInfo").child("Decoders");
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -104,7 +109,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
                 }
             });
 
-            winRef = database.getReference().child("Test").child("Winner");
+            winRef = database.getReference().child(roomId).child("GameInfo").child("Winner");
             winRef.setValue(-1);
 
 
@@ -151,7 +156,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
             }
         });
 
-        plg = new PoliceLocGetter(mMap, catch_btn, this);
+        plg = new PoliceLocGetter(mMap, catch_btn, this, roomId);
         plg.start();
 
         //아이템 버튼 그리기 + 아이템 버튼 쓰레드 만들고 시작
@@ -159,7 +164,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
         itemBtn = findViewById(R.id.itemBtn);
 
 
-        ibc = new ItemButtonController(itemBar, itemBtn, PoliceActivity.this, mMap);
+        ibc = new ItemButtonController(itemBar, itemBtn, PoliceActivity.this, mMap, roomId);
         ibc.start();
 
 
