@@ -77,7 +77,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
 
             Toast.makeText(
                     getApplicationContext(),
-                    "당신의 위치 - \n위도: " + loc.getAltitude() + "\n경도: " + loc.getLongitude(),
+                    "당신의 위치 - \n위도: " + loc.getLatitude() + "\n경도: " + loc.getLongitude(),
                     Toast.LENGTH_LONG).show();
 
             LatLng CUR = new LatLng(loc.getLatitude(), loc.getLongitude());
@@ -151,7 +151,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
             }
         });
 
-        plg = new PoliceLocGetter(mMap, catch_btn);
+        plg = new PoliceLocGetter(mMap, catch_btn, this);
         plg.start();
 
         //아이템 버튼 그리기 + 아이템 버튼 쓰레드 만들고 시작
