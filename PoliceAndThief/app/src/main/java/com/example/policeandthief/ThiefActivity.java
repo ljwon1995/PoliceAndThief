@@ -54,7 +54,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
         roomId = intent.getStringExtra("RoomId");
 
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child(roomId).child("GameInfo").child("Winner");
+        myRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Winner");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

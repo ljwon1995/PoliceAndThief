@@ -66,12 +66,12 @@ public class PoliceLocGetter extends Thread {
                 GenericTypeIndicator<HashMap<String, Double>> to = new GenericTypeIndicator<HashMap<String, Double>>() {};
 
 
-                if(dataSnapshot.child(roomId).child("GameInfo").child("Thief").exists()){
-                    Thief = dataSnapshot.child(roomId).child("GameInfo").child("Thief").getValue(to);
+                if(dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Thief").exists()){
+                    Thief = dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Thief").getValue(to);
                 }
 
-                if(dataSnapshot.child(roomId).child("GameInfo").child("Police").exists()){
-                    Police = dataSnapshot.child(roomId).child("GameInfo").child("Police").getValue(to);
+                if(dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Police").exists()){
+                    Police = dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Police").getValue(to);
                 }
 
                 Log.d(TAG, "Thief = " + Thief.toString());

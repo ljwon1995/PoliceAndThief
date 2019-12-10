@@ -30,7 +30,7 @@ public class DecoderLocSender {
             decs.add(decoders[i]);
         }
 
-        myRef.child(roomId).child("GameInfo").child("Decoders").setValue(decs);
+        myRef.child("Rooms").child(roomId).child("GameInfo").child("Decoders").setValue(decs);
         Log.d(TAG, "decoders send finished");
     }
 }

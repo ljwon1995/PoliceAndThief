@@ -53,7 +53,7 @@ public class ItemButtonController extends Thread {
         roomId = room;
 
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child(roomId).child("GameInfo").child("Thief");
+        myRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Thief");
 
 
 

@@ -29,7 +29,7 @@ public class PoliceLocSender extends Thread {
 
     public PoliceLocSender(Context context, Activity activity, String room){
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child(roomId).child("GameInfo").child("Police");
+        myRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Police");
         flag = true;
         c = context;
         a = activity;

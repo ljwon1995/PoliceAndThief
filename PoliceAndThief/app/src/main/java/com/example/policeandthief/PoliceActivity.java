@@ -94,7 +94,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
 
             //디코더 맵에 찍기
             database = FirebaseDatabase.getInstance();
-            myRef = database.getReference().child(roomId).child("GameInfo").child("Decoders");
+            myRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Decoders");
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -109,7 +109,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
                 }
             });
 
-            winRef = database.getReference().child(roomId).child("GameInfo").child("Winner");
+            winRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Winner");
             winRef.setValue(-1);
 
 

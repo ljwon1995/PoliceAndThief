@@ -13,7 +13,7 @@ public class WinnerChecker {
 
         roomId = room;
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child(roomId).child("GameInfo").child("Winner");
+        myRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Winner");
 
 
     }
