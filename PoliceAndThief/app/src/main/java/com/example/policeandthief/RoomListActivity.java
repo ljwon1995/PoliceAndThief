@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +31,9 @@ public class RoomListActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private final static String TAG = "RoomListActivity!";
     private String userId;
-    Button createRoomBtn;
+    private Button createRoomBtn;
+
+
 
 
     @Override
@@ -38,6 +42,7 @@ public class RoomListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_room_list);
 
         Log.d(TAG, "onCreate");
+
 
 
         Intent intent = getIntent();
@@ -84,11 +89,32 @@ public class RoomListActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() { // 리스트 버튼 작동
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
-                String roomName = list.get(position).getRoomName();
-                intent.putExtra("RoomId", roomName);
-                intent.putExtra("UserId",userId);
-                startActivity(intent);
+
+                if(list.get(position).getPersons() >= 2){
+                    Toast.makeText(getApplicationContext(), "방이 꽉 찼습니다.", Toast.LENGTH_SHORT).show();
+                }
+
+                else {
+
+                    Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
+                    String roomName = list.get(position).getRoomName();
+                    intent.putExtra("RoomId", roomName);
+                    intent.putExtra("UserId", userId);
+                    RoomItem r = list.get(position);
+                    if(r.getThiefId() == null){
+                        r.setThiefId(userId);
+                    }
+
+                    else if(r.getPoliceId() == null){
+                        r.setPoliceId(userId);
+                    }
+
+                    r.setPersons(r.getPersons()+1);
+                    myRef = database.getReference().child("Rooms").child(r.getRoomName()).child("RoomInfo");
+                    myRef.setValue(r);
+
+                    startActivity(intent);
+                }
             }
         });
 

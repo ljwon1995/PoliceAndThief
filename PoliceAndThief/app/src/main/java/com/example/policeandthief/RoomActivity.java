@@ -53,6 +53,10 @@ public class RoomActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 r = dataSnapshot.getValue(RoomItem.class);
+
+
+
+
                 policeTv.setText(r.getPoliceId());
                 thiefTv.setText(r.getThiefId());
                 if(r.getGameStart() == 1){
