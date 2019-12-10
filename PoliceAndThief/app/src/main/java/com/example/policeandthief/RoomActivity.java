@@ -52,24 +52,26 @@ public class RoomActivity extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                r = dataSnapshot.getValue(RoomItem.class);
-
-
-
-
-                policeTv.setText(r.getPoliceId());
-                thiefTv.setText(r.getThiefId());
-                if(r.getGameStart() == 1){
-                    if(r.getPoliceId().compareTo(userId) == 0){
-                        Intent intent = new Intent(RoomActivity.this, PoliceActivity.class);
-                        startActivity(intent);
-                    }
-                    else{
-                        Intent intent = new Intent(RoomActivity.this, ThiefActivity.class);
-                        startActivity(intent);
-                    }
+                if(!dataSnapshot.exists()){
+                    finish();
                 }
 
+                else {
+                    r = dataSnapshot.getValue(RoomItem.class);
+
+
+                    policeTv.setText(r.getPoliceId());
+                    thiefTv.setText(r.getThiefId());
+                    if (r.getGameStart() == 1) {
+                        if (r.getPoliceId().compareTo(userId) == 0) {
+                            Intent intent = new Intent(RoomActivity.this, PoliceActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(RoomActivity.this, ThiefActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                }
             }
 
             @Override
@@ -125,5 +127,31 @@ public class RoomActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        //방장일 시 방 파괴
+        if(r.getMasterId().compareTo(userId) == 0){
+            myRef.removeValue();
+        }
 
+        else{
+            //방장 아닐 시 자기 ID null 값 만들어주고
+            //person --;
+
+            if(r.getPoliceId().compareTo(userId) == 0){
+                r.setPoliceId(null);
+                r.setPersons(r.getPersons()-1);
+            }
+
+            else{
+                r.setThiefId(null);
+                r.setPersons(r.getPersons()-1);
+            }
+            myRef.setValue(r);
+        }
+
+        finish();
+
+
+    }
 }
