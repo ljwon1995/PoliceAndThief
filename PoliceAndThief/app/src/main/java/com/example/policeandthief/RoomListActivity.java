@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -31,13 +32,13 @@ public class RoomListActivity extends AppCompatActivity {
     private ArrayList<RoomItem> list;
     private ListView listview;
     private RoomAdaptor adaptor;
-    private MenuItem mSearch;
     private Context c = this;
-    private String text;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private ArrayList<RoomItem> arraylist;
     private final static String TAG = "RoomListActivity!";
+    private String userId;
+    Button createRoomBtn;
 
 
     @Override
@@ -45,6 +46,9 @@ public class RoomListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_list);
 
+
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("ID");
 
         listview = (ListView) findViewById(R.id.roomlv);
 
@@ -90,6 +94,14 @@ public class RoomListActivity extends AppCompatActivity {
             }
         });
 
+        createRoomBtn = findViewById(R.id.create_room_btn);
+        createRoomBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createRoom();
+            }
+        });
+
     }
 
 
@@ -131,8 +143,9 @@ public class RoomListActivity extends AppCompatActivity {
 
 
 
-    public void make_board(View v){
+    public void createRoom(){
         Intent intent = new Intent(getApplicationContext(), CreateRoomActivity.class);
+        intent.putExtra("ID", userId);
         startActivity(intent);
     }
 

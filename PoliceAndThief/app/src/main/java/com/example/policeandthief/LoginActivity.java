@@ -61,7 +61,8 @@ public class LoginActivity extends AppCompatActivity {
                             expPw = dataSnapshot.child(id).getValue(String.class);
                             if (expPw.compareTo(pw) == 0) {
                                 Toast.makeText(getApplicationContext(), "Succeed", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, RoomListActivity.class);
+                                intent.putExtra("ID", id);
                                 startActivity(intent);
                             }
                             else{
