@@ -13,8 +13,6 @@ public class RoomActivity extends AppCompatActivity {
 
 
 
-
-
     }
 
 

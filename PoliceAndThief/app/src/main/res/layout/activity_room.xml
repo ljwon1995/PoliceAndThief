@@ -3,4 +3,72 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="100dp"
+        >
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/police"
+            />
+
+        <TextView
+            android:id="@+id/police_id_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ijwon1995"
+            android:layout_gravity="center"
+            android:textSize="20dp"
+            android:layout_marginLeft="40dp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        >
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/thief"
+            />
+
+        <TextView
+            android:id="@+id/thief_id_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ijwon1995"
+            android:layout_gravity="center"
+            android:textSize="20dp"
+            android:layout_marginLeft="40dp"/>
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change!"
+        android:layout_marginLeft="140dp"
+        android:layout_marginTop="50dp"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game Start!"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="30dp"
+        />
+
 </LinearLayout>
