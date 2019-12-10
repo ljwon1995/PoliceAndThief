@@ -15,6 +15,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -38,6 +39,7 @@ public class GpsController implements LocationListener {
     private boolean isPermission = false;
 
     protected LocationManager lm;
+    private static final String TAG = "GpsController!";
 
     public GpsController(Context context, Activity activity) {
         isGPSOn = false;
@@ -60,16 +62,20 @@ public class GpsController implements LocationListener {
                         != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(c, android.Manifest.permission.ACCESS_COARSE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "No permission!");
             return null;
         }
 
         try {
+
+            Log.d(TAG, "Enter into try");
             lm = (LocationManager) c.getSystemService(Service.LOCATION_SERVICE);
             isGPSOn = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetworkOn = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
 
             if (isNetworkOn) {
+                Log.d(TAG, "network on");
                 isGetLoc = true;
                 lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
                 if (lm != null) {
@@ -78,19 +84,25 @@ public class GpsController implements LocationListener {
             }
 
             if (isGPSOn) {
+                Log.d(TAG, "gps on");
                 isGetLoc = true;
                 if (loc == null) {
                     lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
                     if (lm != null) {
+                        if(loc == null){
+                            Log.d(TAG, "loc is null");
+                        }
                         loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+
                     }
                 }
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Log.d(TAG, "Latitude : " + loc.getLatitude() + "Longitude : " + loc.getLongitude());
         return loc;
     }
 
@@ -128,7 +140,7 @@ public class GpsController implements LocationListener {
 
 
     public void onLocationChanged(Location location) {
-        // TODO Auto-generated method stub
+        
 
     }
 

@@ -212,15 +212,8 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
     public void onBackPressed() {
         super.onBackPressed();
 
-
-        try {
-            pls.setFlag(false);
-            pls.join();
-            plg.setFlag(false);
-            plg.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        pls.setFlag(false);
+        plg.setFlag(false);
 
 
 

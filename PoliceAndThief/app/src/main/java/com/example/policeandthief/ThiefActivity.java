@@ -85,8 +85,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
 
-        tls = new ThiefLocSender(ThiefActivity.this, this);
-        tls.start();
+
 
         dls = new DecoderLocSender();
 
@@ -160,14 +159,9 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
         super.onBackPressed();
 
 
-        try {
-            tls.setFlag(false);
-            tls.join();
-            tlg.setFlag(false);
-            tlg.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        tls.setFlag(false);
+        tlg.setFlag(false);
+
 
 
 
@@ -181,6 +175,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
 
         gpsController = new GpsController(ThiefActivity.this, this);
+        Log.d(TAG, gpsController.toString());
 
         if (gpsController.isGetLocation()) {
 
@@ -188,10 +183,11 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
             Toast.makeText(
                     getApplicationContext(),
-                    "당신의 위치 - \n위도: " + loc.getAltitude() + "\n경도: " + loc.getLongitude(),
+                    "당신의 위치 - \n위도: " + loc.getLatitude() + "\n경도: " + loc.getLongitude(),
                     Toast.LENGTH_LONG).show();
 
             LatLng CUR = new LatLng(loc.getLatitude(), loc.getLongitude());
+            Log.d(TAG, "Current location : " + loc.getLatitude() + " + " + loc.getLongitude());
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(CUR));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
@@ -219,6 +215,8 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
             tlg = new ThiefLocGetter(mMap, ThiefActivity.this, decoderBtn, decoders);
             tlg.start();
+            tls = new ThiefLocSender(ThiefActivity.this, this);
+            tls.start();
 
         } else {
             gpsController.popAlert();

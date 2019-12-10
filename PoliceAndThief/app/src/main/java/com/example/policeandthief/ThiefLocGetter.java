@@ -139,11 +139,6 @@ public class ThiefLocGetter extends Thread {
 
         myRef.removeEventListener(ve);
         beepManager.setFlag(false);
-        try {
-            beepManager.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void setFlag(boolean b){
