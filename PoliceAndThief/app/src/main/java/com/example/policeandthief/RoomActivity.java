@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -98,15 +99,20 @@ public class RoomActivity extends AppCompatActivity {
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                r.setGameStart(1);
-                myRef.setValue(r);
-                if(r.getPoliceId().compareTo(userId) == 0){
-                    Intent intent = new Intent(RoomActivity.this, PoliceActivity.class);
-                    startActivity(intent);
+
+                if(r.getPoliceId()!=null && r.getThiefId() != null) {
+                    r.setGameStart(1);
+                    myRef.setValue(r);
+                    if (userId.compareTo(r.getPoliceId()) == 0) {
+                        Intent intent = new Intent(RoomActivity.this, PoliceActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(RoomActivity.this, ThiefActivity.class);
+                        startActivity(intent);
+                    }
                 }
                 else{
-                    Intent intent = new Intent(RoomActivity.this, ThiefActivity.class);
-                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "두 명이 되어야 시작할 수 있습니다.", Toast.LENGTH_SHORT).show();
                 }
 
             }

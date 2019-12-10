@@ -54,36 +54,39 @@ public class LoginActivity extends AppCompatActivity {
                 id = idEt.getText().toString();
                 pw = pwEt.getText().toString();
 
-                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child(id).exists()) {
-                            expPw = dataSnapshot.child(id).getValue(String.class);
-                            if (expPw.compareTo(pw) == 0) {
-                                Toast.makeText(getApplicationContext(), "Succeed", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, RoomListActivity.class);
-                                intent.putExtra("ID", id);
-                                startActivity(intent);
-                            }
-                            else{
+                if(!id.isEmpty()) {
+
+                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.child(id).exists()) {
+                                expPw = dataSnapshot.child(id).getValue(String.class);
+                                if (expPw.compareTo(pw) == 0) {
+                                    Toast.makeText(getApplicationContext(), "Succeed", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, RoomListActivity.class);
+                                    intent.putExtra("ID", id);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
                                 Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
                             }
+
+
                         }
 
-                        else{
-                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
                         }
+                    });
+                }
 
-
-                    }
-
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
+                else{
+                    Toast.makeText(getApplicationContext(), "ID를 입력해주세요!", Toast.LENGTH_SHORT).show();
+                }
 
 
             }
