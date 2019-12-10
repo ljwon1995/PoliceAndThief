@@ -29,13 +29,14 @@ public class PoliceLocSender extends Thread {
 
     public PoliceLocSender(Context context, Activity activity, String room){
         database = FirebaseDatabase.getInstance();
+        roomId = room;
         myRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Police");
         flag = true;
         c = context;
         a = activity;
         gpsController = new GpsController(c, a);
         Police = new HashMap<>();
-        roomId = room;
+
     }
 
     public void run(){

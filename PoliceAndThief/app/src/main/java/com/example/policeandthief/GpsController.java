@@ -68,14 +68,14 @@ public class GpsController implements LocationListener {
 
         try {
 
-            Log.d(TAG, "Enter into try");
+
             lm = (LocationManager) c.getSystemService(Service.LOCATION_SERVICE);
             isGPSOn = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNetworkOn = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
 
             if (isNetworkOn) {
-                Log.d(TAG, "network on");
+
                 isGetLoc = true;
                 lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
                 if (lm != null) {
@@ -84,7 +84,7 @@ public class GpsController implements LocationListener {
             }
 
             if (isGPSOn) {
-                Log.d(TAG, "gps on");
+
                 isGetLoc = true;
                 if (loc == null) {
                     lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
@@ -102,7 +102,6 @@ public class GpsController implements LocationListener {
             e.printStackTrace();
         }
 
-        Log.d(TAG, "Latitude : " + loc.getLatitude() + "Longitude : " + loc.getLongitude());
         return loc;
     }
 

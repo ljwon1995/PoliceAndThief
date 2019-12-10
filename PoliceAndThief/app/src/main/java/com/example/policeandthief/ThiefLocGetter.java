@@ -78,40 +78,41 @@ public class ThiefLocGetter extends Thread {
                 GenericTypeIndicator<HashMap<String, Double>> to = new GenericTypeIndicator<HashMap<String, Double>>() {};
 
 
-                if(dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Thief").exists()){
+                if(dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Thief").exists()
+                && dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Police").exists()){
                     Thief = dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Thief").getValue(to);
-                }
-
-                if(dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Police").exists()){
                     Police = dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Police").getValue(to);
-                }
+                    Log.d(TAG, "Thief = " + Thief.toString());
+                    Log.d(TAG, "Police = " + Police.toString());
 
-                Log.d(TAG, "Thief = " + Thief.toString());
-                Log.d(TAG, "Police = " + Police.toString());
-
-                allLoc.setThief(Thief);
-                allLoc.setPolice(Police);
+                    allLoc.setThief(Thief);
+                    allLoc.setPolice(Police);
 
 //                    get distance from police and decoder;
-                dm = new DistanceManager(allLoc, decoders);
+                    dm = new DistanceManager(allLoc, decoders);
 
 
-                toPoliceDistance = dm.getDistance().get("toPolice");
+                    toPoliceDistance = dm.getDistance().get("toPolice");
 
 
-                for(int i =0 ;i < 5; i++){
-                    toDecoderDistance[i] = dm.getDistance().get("toDecoder" + i);
+                    for(int i =0 ;i < 5; i++){
+                        toDecoderDistance[i] = dm.getDistance().get("toDecoder" + i);
+                    }
+
+
+                    Log.d(TAG, "To Police : " + toPoliceDistance);
+                    Toast.makeText(context, "Distance = " + toPoliceDistance, Toast.LENGTH_SHORT).show();
+                    for(int i = 0; i < 5; i++){
+                        Log.d(TAG, "To Decoder" + i + " : " + toDecoderDistance[i]);
+                    }
+
+                    beepManager.setBeep(toPoliceDistance);
+                    decoderBtnManager.setDecoderVisible(toDecoderDistance, decoders);
                 }
 
 
-                Log.d(TAG, "To Police : " + toPoliceDistance);
-                Toast.makeText(context, "Distance = " + toPoliceDistance, Toast.LENGTH_SHORT).show();
-                for(int i = 0; i < 5; i++){
-                    Log.d(TAG, "To Decoder" + i + " : " + toDecoderDistance[i]);
-                }
 
-                beepManager.setBeep(toPoliceDistance);
-                decoderBtnManager.setDecoderVisible(toDecoderDistance, decoders);
+
             }
 
             @Override

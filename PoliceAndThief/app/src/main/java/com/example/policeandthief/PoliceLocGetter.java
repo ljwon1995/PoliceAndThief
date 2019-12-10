@@ -66,26 +66,27 @@ public class PoliceLocGetter extends Thread {
                 GenericTypeIndicator<HashMap<String, Double>> to = new GenericTypeIndicator<HashMap<String, Double>>() {};
 
 
-                if(dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Thief").exists()){
+                if(dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Thief").exists()
+                &&dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Police").exists()){
                     Thief = dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Thief").getValue(to);
-                }
-
-                if(dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Police").exists()){
                     Police = dataSnapshot.child("Rooms").child(roomId).child("GameInfo").child("Police").getValue(to);
+                    Log.d(TAG, "Thief = " + Thief.toString());
+                    Log.d(TAG, "Police = " + Police.toString());
+
+
+                    allLoc.setThief(Thief);
+                    allLoc.setPolice(Police);
+                    pdm = new PoliceDistanceManager(allLoc);
+                    toThiefDistance = pdm.getDistance().get("toThief");
+                    Log.d(TAG, "To Thief Distance = " + toThiefDistance);
+                    Toast.makeText(context, "Distance = " + toThiefDistance, Toast.LENGTH_SHORT).show();
+
+                    catchBtnManager.setCatchVisible(toThiefDistance);
                 }
 
-                Log.d(TAG, "Thief = " + Thief.toString());
-                Log.d(TAG, "Police = " + Police.toString());
 
 
-                allLoc.setThief(Thief);
-                allLoc.setPolice(Police);
-                pdm = new PoliceDistanceManager(allLoc);
-                toThiefDistance = pdm.getDistance().get("toThief");
-                Log.d(TAG, "To Thief Distance = " + toThiefDistance);
-                Toast.makeText(context, "Distance = " + toThiefDistance, Toast.LENGTH_SHORT).show();
 
-                catchBtnManager.setCatchVisible(toThiefDistance);
 
 
             }

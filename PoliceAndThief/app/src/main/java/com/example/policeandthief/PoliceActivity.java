@@ -44,16 +44,23 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
     private WinnerChecker winnerChecker;
     private DatabaseReference winRef;
     private String roomId;
+    private DatabaseReference initRef;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_police_maps);
-
-
         Intent intent = getIntent();
         roomId = intent.getStringExtra("RoomId");
+
+        database = FirebaseDatabase.getInstance();
+
+        winRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Winner");
+        winRef.setValue(-1);
+
+
+
 
 
         winnerChecker = new WinnerChecker(roomId);
@@ -93,14 +100,17 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
             mMap.setMyLocationEnabled(true);
 
             //디코더 맵에 찍기
-            database = FirebaseDatabase.getInstance();
+
             myRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Decoders");
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    GenericTypeIndicator<ArrayList<Decoder>> to = new GenericTypeIndicator<ArrayList<Decoder>>() {};
-                    decoders = dataSnapshot.getValue(to);
-                    putDecoderOnMap();
+                    if(dataSnapshot.exists()) {
+                        GenericTypeIndicator<ArrayList<Decoder>> to = new GenericTypeIndicator<ArrayList<Decoder>>() {
+                        };
+                        decoders = dataSnapshot.getValue(to);
+                        putDecoderOnMap();
+                    }
                 }
 
                 @Override
@@ -109,8 +119,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
                 }
             });
 
-            winRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Winner");
-            winRef.setValue(-1);
+
 
 
 

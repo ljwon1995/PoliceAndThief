@@ -52,9 +52,16 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
         Intent intent = getIntent();
         roomId = intent.getStringExtra("RoomId");
-
         database = FirebaseDatabase.getInstance();
+
+
         myRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Winner");
+        myRef.setValue(-1);
+
+
+
+
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -205,6 +212,10 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
             //send decoders info to server!
             dls.sendToServer(decoders);
 
+            tlg = new ThiefLocGetter(mMap, ThiefActivity.this, decoderBtn, decoders, roomId);
+            tlg.start();
+            tls = new ThiefLocSender(ThiefActivity.this, this, roomId);
+            tls.start();
 
 
 
@@ -215,10 +226,7 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
 
 
 
-            tlg = new ThiefLocGetter(mMap, ThiefActivity.this, decoderBtn, decoders, roomId);
-            tlg.start();
-            tls = new ThiefLocSender(ThiefActivity.this, this, roomId);
-            tls.start();
+
 
         } else {
             gpsController.popAlert();
