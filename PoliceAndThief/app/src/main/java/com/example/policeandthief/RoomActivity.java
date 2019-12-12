@@ -65,11 +65,15 @@ public class RoomActivity extends AppCompatActivity {
                     if (r.getGameStart() == 1) {
                         if (r.getPoliceId().compareTo(userId) == 0) {
                             Intent intent = new Intent(RoomActivity.this, PoliceActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra("RoomId", r.getRoomName());
                             startActivity(intent);
                         } else {
                             Intent intent = new Intent(RoomActivity.this, ThiefActivity.class);
                             intent.putExtra("RoomId", r.getRoomName());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }
                     }
@@ -114,10 +118,14 @@ public class RoomActivity extends AppCompatActivity {
                     if (userId.compareTo(r.getPoliceId()) == 0) {
                         Intent intent = new Intent(RoomActivity.this, PoliceActivity.class);
                         intent.putExtra("RoomId", r.getRoomName());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(RoomActivity.this, ThiefActivity.class);
                         intent.putExtra("RoomId", r.getRoomName());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
                 }

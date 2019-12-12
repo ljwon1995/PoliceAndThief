@@ -45,6 +45,7 @@ public class PoliceActivity extends FragmentActivity implements OnMapReadyCallba
     private DatabaseReference winRef;
     private String roomId;
     private DatabaseReference initRef;
+    private DatabaseReference roomInfoRef;
 
 
     @Override

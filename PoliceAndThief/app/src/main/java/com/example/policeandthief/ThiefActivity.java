@@ -55,8 +55,11 @@ public class ThiefActivity extends FragmentActivity implements OnMapReadyCallbac
         database = FirebaseDatabase.getInstance();
 
 
+
         myRef = database.getReference().child("Rooms").child(roomId).child("GameInfo").child("Winner");
         myRef.setValue(-1);
+
+
 
 
 

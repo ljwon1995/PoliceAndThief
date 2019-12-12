@@ -21,7 +21,7 @@ public class DecoderBtnManager {
 
         for(int i = 0; i < 5; i++){
             Log.d(TAG, "distances" + i + " : " +distances[i]);
-            if(distances[i] > 50){
+            if(distances[i] > 30){
                 d[i].setActive(false);
             }
             else{

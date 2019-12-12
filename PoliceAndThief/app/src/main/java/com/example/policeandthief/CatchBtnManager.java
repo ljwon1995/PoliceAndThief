@@ -16,7 +16,7 @@ public class CatchBtnManager {
 
         boolean setFlag = false;
 
-        if(distance > 5){
+        if(distance > 15){
             setFlag = false;
         }
         else{
